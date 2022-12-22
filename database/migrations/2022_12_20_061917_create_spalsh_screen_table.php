@@ -13,7 +13,7 @@ class CreateSpalshScreenTable extends Migration
      */
     public function up()
     {
-        Schema::create('spalsh_screen', function (Blueprint $table) {
+        Schema::create('splash_screens', function (Blueprint $table) {
             $table->id();
             $table->string('title');
             $table->text('img_path');

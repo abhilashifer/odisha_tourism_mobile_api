@@ -18,7 +18,18 @@ class CreateTouristDestinationTable extends Migration
             $table->string('name');
             $table->string('trip_type')->nullable();
             $table->text('loc_cord')->nullable();
-            $table->text
+            $table->text('thumbnail');
+            $table->text('address');
+            $table->foreignId('district_id')->references('intDistrictId')->on('t_district');
+            $table->foreignId('destination_category_id')->references('intCatId')->on('m_attractions_category');
+            $table->text('email')->nullable();
+            $table->string('mobile_number')->nullable();
+            $table->string('website')->nullable();
+            $table->text('short_des');
+            $table->text('description')->nullable();
+
+
+
             $table->timestamps();
         });
     }

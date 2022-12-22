@@ -15,6 +15,10 @@ class CreateCategoriesMasterTable extends Migration
     {
         Schema::create('categories_master', function (Blueprint $table) {
             $table->id();
+            $table->string('name');
+            $table->string('cat_type')->nullable();
+            $table->string('thumbnail');
+            $table->boolean('active');
             $table->timestamps();
         });
     }

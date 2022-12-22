@@ -15,6 +15,9 @@ class CreateTravellersExperienceTable extends Migration
     {
         Schema::create('travellers_experience', function (Blueprint $table) {
             $table->id();
+            $table->text('thumbnail');
+            $table->json('media_data');
+            $table->boolean('active');
             $table->timestamps();
         });
     }

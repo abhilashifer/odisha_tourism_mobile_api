@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateMajorCitiesTable extends Migration
+class CreateActivitiesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,16 @@ class CreateMajorCitiesTable extends Migration
      */
     public function up()
     {
-        Schema::create('major_cities', function (Blueprint $table) {
+        Schema::create('activities', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('subcategories_master_id')->references('id')->on('subcategories_master');
             $table->string('name');
-            $table->foreignId('district_id')->references('intDistrictId')->on('t_district');
-            $table->string('desc_short')->nullable();
-            $table->text('thumbnail')->nullable();
+            $table->string('des_short');
+            $table->string('des_long');
+            $table->text('thumbnail');
+
+            $table->string('name');
+
             $table->timestamps();
         });
     }
@@ -30,6 +34,6 @@ class CreateMajorCitiesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('major_cities');
+        Schema::dropIfExists('activities');
     }
 }

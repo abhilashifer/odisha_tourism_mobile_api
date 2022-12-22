@@ -15,6 +15,12 @@ class CreateFoodMasterTable extends Migration
     {
         Schema::create('food_master', function (Blueprint $table) {
             $table->id();
+            $table->string('name');
+            $table->enum('food_type', ['veg', 'non-veg']);
+            $table->text('thumbnail');
+            $table->text('des_short');
+            $table->text('des_long');
+
             $table->timestamps();
         });
     }
