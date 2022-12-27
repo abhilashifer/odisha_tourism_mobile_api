@@ -16,7 +16,7 @@ class CreateSpalshScreenTable extends Migration
         Schema::create('splash_screens', function (Blueprint $table) {
             $table->id();
             $table->string('title');
-            $table->text('img_path');
+            $table->text('thumbnail');
             $table->boolean('active');
             $table->timestamps();
         });

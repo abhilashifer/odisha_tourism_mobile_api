@@ -15,14 +15,12 @@ class CreateActivitiesTable extends Migration
     {
         Schema::create('activities', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('subcategories_master_id')->references('id')->on('subcategories_master');
+            $table->foreignId('master_subcategory_id');
             $table->string('name');
             $table->string('des_short');
             $table->string('des_long');
             $table->text('thumbnail');
-
-            $table->string('name');
-
+            $table->text('loc_cord');
             $table->timestamps();
         });
     }

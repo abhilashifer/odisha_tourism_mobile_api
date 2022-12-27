@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateMajorCitiesTable extends Migration
+class CreateTouristDestinationsToursTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,10 @@ class CreateMajorCitiesTable extends Migration
      */
     public function up()
     {
-        Schema::create('major_cities', function (Blueprint $table) {
+        Schema::create('tourist_destinations_tours', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->integer('district_id');
-            $table->string('desc_short')->nullable();
-            $table->text('thumbnail')->nullable();
+            $table->foreignId('tour_id')->references('id')->on('tours');
+            $table->foreignId('tourist_destination_id');
             $table->timestamps();
         });
     }
@@ -30,6 +28,6 @@ class CreateMajorCitiesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('major_cities');
+        Schema::dropIfExists('tourist_destinations_tours');
     }
 }

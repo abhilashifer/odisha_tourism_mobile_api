@@ -13,10 +13,10 @@ class CreateTravellersExperienceTable extends Migration
      */
     public function up()
     {
-        Schema::create('travellers_experience', function (Blueprint $table) {
+        Schema::create('traveller_experiences', function (Blueprint $table) {
             $table->id();
             $table->text('thumbnail');
-            $table->json('media_data');
+            $table->json('media_data')->nullable();
             $table->boolean('active');
             $table->timestamps();
         });

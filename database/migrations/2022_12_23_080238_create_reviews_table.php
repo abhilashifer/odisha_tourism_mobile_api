@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateMajorCitiesTable extends Migration
+class CreateReviewsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,13 @@ class CreateMajorCitiesTable extends Migration
      */
     public function up()
     {
-        Schema::create('major_cities', function (Blueprint $table) {
+        Schema::create('reviews', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->integer('district_id');
-            $table->string('desc_short')->nullable();
-            $table->text('thumbnail')->nullable();
+            $table->morphs('reviewable');
+            $table->integer('user_id');
+            $table->text('body')->nullable();
+            $table->text('additional_info')->nullable();
+            $table->decimal('rating');
             $table->timestamps();
         });
     }
@@ -30,6 +31,6 @@ class CreateMajorCitiesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('major_cities');
+        Schema::dropIfExists('reviews');
     }
 }

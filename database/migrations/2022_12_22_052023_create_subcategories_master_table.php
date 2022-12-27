@@ -13,9 +13,9 @@ class CreateSubcategoriesMasterTable extends Migration
      */
     public function up()
     {
-        Schema::create('subcategories_master', function (Blueprint $table) {
+        Schema::create('master_subcategories', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('categories_master_id')->references('id')->on('categories_master');
+            $table->foreignId('master_category_id');
             $table->string('name');
             $table->text('thumbnail')->nullable();
             $table->text('description')->nullable();
