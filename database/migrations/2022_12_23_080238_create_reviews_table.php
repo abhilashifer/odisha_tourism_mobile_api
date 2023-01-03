@@ -20,6 +20,8 @@ class CreateReviewsTable extends Migration
             $table->text('body')->nullable();
             $table->text('additional_info')->nullable();
             $table->decimal('rating');
+            $table->boolean('status');
+            //$table->boolean('status')->default(false);
             $table->timestamps();
         });
     }

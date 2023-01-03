@@ -15,4 +15,11 @@ class Like extends Model
     {
         return $this->morphTo();
     }
+    /**
+     * Get the like owner.
+     */
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }

@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 
 class MajorCity extends Model
@@ -11,6 +12,16 @@ class MajorCity extends Model
 
     protected $fillable = ['name', 'district_id', 'desc_short', 'thumbnail'];
 
+    /**
+     * Retrieving district name
+     */
+    public function district()
+    {
+        return DB::table('t_district')->select('vchDistrictName')->where('intDistrictId ', $this->district_id)->value('vchDistrictName');
+    }
+    /**
+     * Retrieving images 
+     */
     public function images()
     {
         return $this->morphMany('App\Image', 'imageable');
