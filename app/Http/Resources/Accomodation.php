@@ -17,12 +17,13 @@ class Accomodation extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
-            'category' => $this->category(),
+            'district'=> $this->district,
+            'category' => $this->category,
             'thumbnail' => $this->thumbnail,
             'address' => $this->address,
             'des_short' => $this->des_short,
             'likes' => count($this->likes),
-            'rating' => $this->rating(),
+            'rating' => $this->rating,
             'tags' =>Tag::collection($this->tags)
         ];
     }

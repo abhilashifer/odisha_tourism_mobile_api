@@ -17,12 +17,12 @@ class Food extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
-            'category' => $this->category(),
+            'category' => $this->master_subcategory_name,
             'type' => $this->food_type,
             'thumbnail' => $this->thumbnail,
             'des_short' => $this->des_short,
             'likes' => count($this->likes),
-            'rating' => $this->rating(),
+            'rating' => $this->rating,
             'reviews' => count($this->reviews),
         ];
     }

@@ -3,17 +3,20 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 class Activity extends Model
 {
     protected $fillable = ['master_subcategory_id', 'name', 'des_short', 'des_long', 'thumbnail', 'loc_cord'];
 
-     /**
-     * Get subcategory for the activity.
-     */
-    public function category()
+    protected $appends = ['category','rating'];
+    protected $primaryKey = 'id';
+    public function getCategoryAttribute()
     {
-        return $this->belongsTo('App\MasterSubcategory');
+        return DB::table('master_subcategories')
+            ->select('name')
+            ->where('id',$this->master_subcategory_id)
+            ->value('name');
     }
 
      /**
@@ -52,6 +55,22 @@ class Activity extends Model
      */
     public function tags()
     {
-        return $this->morphToMany(Tag::class, 'taggable');
+        return $this->morphToMany(Tag::class, 'taggable')->select('id','tag');
+    }
+    /**
+     * Retrieving rating
+     */
+    public function getRatingAttribute()
+    {
+        $count = count($this->reviews);
+        if ($count > 0) {
+            $total_rating = 0;
+            foreach ($this->reviews as $val) {
+                $total_rating += $val->rating;
+            }
+            return $total_rating / $count;
+        } else {
+            return 0;
+        }
     }
 }

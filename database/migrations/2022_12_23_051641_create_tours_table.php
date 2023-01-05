@@ -20,6 +20,7 @@ class CreateToursTable extends Migration
             $table->string('name');
             $table->string('tour_from')->nullable();
             $table->string('tour_to')->nullable();
+            $table->text('thumbnail')->nullable();
             $table->text('des_short');
             $table->text('des_long');
             $table->text('loc_cord');

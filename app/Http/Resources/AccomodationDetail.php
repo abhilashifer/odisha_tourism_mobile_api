@@ -17,8 +17,8 @@ class AccomodationDetail extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
-            'category' => $this->category(),
-            'district' => $this->district(),
+            'category' => $this->category,
+            'district' => $this->district,
             'thumbnail' => $this->thumbnail,
             'address' => $this->address,
             'des_short' => $this->des_short,
@@ -29,7 +29,7 @@ class AccomodationDetail extends JsonResource
             'website' => $this->website,
             'reviews' => Review::collection($this->activeReviews),
             'likes' => count($this->likes),
-            'rating' => $this->rating(),
+            'rating' => $this->rating,
             'images' => Image::collection($this->images),
             'tags'=> Tag::collection($this->tags)
         ];

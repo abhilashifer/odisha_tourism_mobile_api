@@ -17,13 +17,13 @@ class Activity extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
-            'category' => new MasterSubcategory($this->subcategory),
+            'category' => $this->category,
             'des_short' => $this->des_short,
             'des_long' => $this->des_long,
             'thumbnail' => $this->thumbnail,
             'location' => $this->loc_cord,
-            'reviews' => Review::collection($this->activeReviews),
-            'likes' => count($this->likes()),
+            'reviews' =>$this->activeReviews,
+            'likes' => count($this->likes),
             'images' => Image::collection($this->images)
         ];
     }

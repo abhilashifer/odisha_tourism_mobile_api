@@ -1,13 +1,9 @@
 <?php
 
 use App\Accomodation;
-use App\Food;
-use App\Http\Resources\TouristDestinationDetail as ResourcesTouristDestinationDetail;
-use App\MasterSubcategory;
 use App\TouristDestination;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\DB;
 
 
 /*
@@ -38,11 +34,18 @@ Route::prefix('v1')->group(function () {
     Route::get('/food/{id}', 'Api\v1\FoodController@detail');
     Route::get('/home_cat','Api\v1\HomeController@homeCategories');
     Route::get('/what_to_do','Api\v1\HomeController@whatToDo');
+    Route::get('/map_view','Api\v1\HomeController@getAllDataForMap');
+    Route::get('/sorted_events','Api\v1\EventController@getSortedEvents');
+    Route::get('/event/{id}','Api\v1\EventController@detail');
+    Route::get('/activity','Api\v1\ActivityController@sortedActivities');
+    Route::get('/activity/{id}','Api\v1\ActivityController@detail');
+
+
 
 
     Route::get('/test', function () {
 
-     return response()->json(['data'=>'']);
+     return response()->json(['data'=>\App\Http\Resources\Accomodation::collection(Accomodation::all())]);
 
     });
 });

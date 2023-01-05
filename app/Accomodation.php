@@ -10,17 +10,21 @@ class Accomodation extends Model
 {
     protected $fillable = ['name', 'accomodation_cat_id', 'district_id', 'thumbnail', 'address', 'des_short', 'des_long', 'loc_cord', 'mobile_number', 'email', 'website'];
 
+    protected $appends = ['category','district','rating'];
     /**
      * Retrieving accomodation category
      */
-    public function category()
+    public function getCategoryAttribute()
     {
-        return DB::table('t_accommodation_category')->select('vchCategoryName')->where('intCategoryId', $this->accomodation_cat_id)->value('vchCategoryName');
+        return DB::table('t_accommodation_category')
+                   ->select('vchCategoryName')
+                    ->where('intCategoryId', $this->accomodation_cat_id)
+                    ->value('vchCategoryName');
     }
     /**
      * Retrieving district name
      */
-    public function district()
+    public function getDistrictAttribute()
     {
         return DB::table('t_district')->select('vchDistrictName')->where('intDistrictId', $this->district_id)->value('vchDistrictName');
     }
@@ -55,12 +59,12 @@ class Accomodation extends Model
      */
     public function tags()
     {
-        return $this->morphToMany(Tag::class, 'taggable');
+        return $this->morphToMany(Tag::class, 'taggable')->select('id','tag');
     }
     /**
      * Retrieving rating
      */
-    public function rating()
+    public function getRatingAttribute()
     {
         $count = count($this->reviews);
         if ($count > 0) {

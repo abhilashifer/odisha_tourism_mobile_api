@@ -6,13 +6,16 @@ use App\Activity;
 use App\Event;
 use App\Food;
 use App\Http\Controllers\Controller;
+use App\Accomodation;
 use App\Http\Resources\SplashScreen as ResourcesSplashScreen;
 use App\Http\Resources\MasterCategory as ResourceMasterCategory;
 use App\MasterCategory;
 use App\SplashScreen;
 use App\Tag;
 use App\Tour;
+use App\TouristDestination;
 use Illuminate\Http\Request;
+
 
 class HomeController extends Controller
 {
@@ -23,8 +26,8 @@ class HomeController extends Controller
      */
     public function getSplashScreens()
     {
-        $splashs = SplashScreen::where('active', 1)->orderBy('created_at', 'desc')->limit(1)->get();
-        return response()->json(["screens" => ResourcesSplashScreen::collection($splashs)]);
+        $splash = SplashScreen::where('active', 1)->orderBy('updated_at', 'desc')->limit(1)->get();
+        return response()->json(["screens" => ResourcesSplashScreen::collection($splash)]);
     }
 
     /**
@@ -90,13 +93,21 @@ class HomeController extends Controller
              'discover'=>[],
              'dayout'=>[],
          ];
-         $activities = Activity::orderBy('updated_at','desc')->limit(30)->get();
+         $activities = Activity::with('tags')->orderBy('updated_at','desc')->limit(30)->get()->toarray();
+         $rating = array_column($activities,'rating');
+         array_multisort($rating,SORT_DESC,$activities);
          $data['activities'] = $activities;
-         $tours = Tour::orderBy('updated_at','desc')->limit(30)->get();
+         $tours = Tour::with('tags')->orderBy('updated_at','desc')->limit(30)->get()->toArray();
+            $rating = array_column($tours,'rating');
+            array_multisort($rating,SORT_DESC,$tours);
          $data['tours'] = $tours;
-         $events = Event::orderBy('updated_at','desc')->limit(30)->get();
+         $events = Event::with('tags')->orderBy('updated_at','desc')->limit(30)->get()->toArray();
+            $rating = array_column($events,'rating');
+            array_multisort($rating,SORT_DESC,$events);
          $data['events'] = $events;
-         $foods = Food::orderBy('updated_at','desc')->limit(30)->get();
+         $foods = Food::with('tags')->orderBy('updated_at','desc')->limit(30)->get()->toArray();
+            $rating = array_column($foods,'rating');
+            array_multisort($rating,SORT_DESC,$foods);
          $data['foods']= $foods;
          $sight = Tag::with('tours','touristDestinations','events','activities')
                      ->where('tag','LIKE','%sight%')
@@ -105,7 +116,7 @@ class HomeController extends Controller
          $data['sight_seeing'] = $sight;
         $discover = Tag::with('tours','touristDestinations','foods','events','activities','accomodations')
                         ->where('tag','LIKE','%discover%')
-                        ->orWhere('tag_meta','LIKE','%discover%')
+                        ->orWhere('tag','LIKE','%discoverOdisha%')
                         ->limit(30)
                         ->get();
         $data['discover']=$discover;
@@ -122,6 +133,51 @@ class HomeController extends Controller
           return response()->json(['error'=>$e->getMessage()]);
         }
     }
+    /**
+     * Get all what to do for map
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function getAllDataForMap()
+    {
+        try {
+            $data = [
+                'activities'=>[],
+                'tours' => [],
+                'events' => [],
+                'foods' =>[],
+                'discover'=>[],
+            ];
+            $activities = Activity::select('name','thumbnail','loc_cord')
+                ->orderBy('updated_at','desc')
+                ->limit(10)
+                ->get();
+            $data['activities'] = $activities;
+            $tours = Tour::select('name','thumbnail','loc_cord')
+                ->orderBy('updated_at','desc')
+                ->limit(10)
+                ->get();
+            $data['tours'] = $tours;
+            $events = Event::select('name','thumbnail','loc_cord')
+                ->orderBy('updated_at','desc')
+                ->limit(10)
+                ->get();
+            $data['events'] = $events;
+            $foods = Accomodation::select('name','thumbnail','loc_cord')
+                ->whereIn('accomodation_cat_id',[1,5,6])
+                ->limit(10)
+                ->get();
+            $data['foods'] = $foods;
+            $discover = TouristDestination::select('name','thumbnail','loc_cord')
+                ->orderBy('updated_at','desc')
+                ->limit(10)
+                ->get();
+            $data['discover'] = $discover;
+            return response()->json(['map_data'=>$data]);
+        } catch (\Exception $e){
+            return response()->json(['error'=> $e->getMessage()]);
+        }
+    }
+
 
 
 

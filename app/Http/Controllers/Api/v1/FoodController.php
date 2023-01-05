@@ -20,9 +20,13 @@ class FoodController extends Controller
     public function hotDishes(Request $request)
     {
         try {
-            $user_district = strtoupper($request['district']);
-           $food = ResourcesFood::collection(Food::sortByRating( $user_district));
-            return response()->json(['foods' => $food]);
+            //$user_district = strtoupper($request['district']);
+          // $food = ResourcesFood::collection(Food::orderBy('updated_at','desc')->limit(30)->get());
+            $foods = Food::withCount(['likes','reviews'])->orderBy('updated_at','desc')->limit(30)->get()->toArray();
+            $ratings = array_column($foods,'rating');
+            array_multisort($ratings, SORT_DESC, $foods);
+            //$foods = ResourcesFood::collection($foods);
+            return response()->json(['foods' => $foods]);
         } catch (\Exception $e) {
             return response()->json(['error' => $e->getMessage()]);
         }

@@ -10,13 +10,16 @@ class Food extends Model
 
     protected $fillable = ['master_subcategory_id', 'name', 'food_type', 'thumbnail', 'des_short', 'des_long'];
 
+    protected $appends =['master_subcategory_name','rating'];
+
     /**
      * Retrieving subcategory
      */
-    public function category()
+    public function getMasterSubcategoryNameAttribute()
     {
-        return MasterSubcategory::where('id', '=', $this->master_subcategory_id)->first()->value('name');
+        return MasterSubcategory::where('id', '=', $this->master_subcategory_id)->value('name');
     }
+
     /**
      * Retrieving images
      */
@@ -43,12 +46,12 @@ class Food extends Model
      */
     public function likes()
     {
-        return $this->morphMany('App\Like', 'likeable');
+        return $this->morphMany('App\Like', 'likeable')->select();
     }
     /**
      * Retrieving rating
      */
-    public function rating()
+    public function getRatingAttribute()
     {
         $count = count($this->reviews);
         if ($count > 0) {
@@ -66,31 +69,12 @@ class Food extends Model
      */
     public function tags()
     {
-        return $this->morphToMany(Tag::class, 'taggable');
+        return $this->morphToMany(Tag::class, 'taggable')->select('id','tag');
     }
-    /**
-     * Get rating for a single food.
-     */
-    public static function ratingByFoodId($foodId)
-    {
-        $rating = self::where('id', '=', $foodId)->first()->rating();
-        return $rating;
-    }
-    /**
-     * Get all of the tags for the food.
-     */
-    public static function sortByRating($dis)
+
+    public static function sortByRating()
     {
 
-        $foods = self::orderBy('id', 'desc')->limit(10)->get();
-        foreach ($foods as $val) {
-            $val['rating'] = self::ratingByFoodId($val->id);
-            unset($val->des_long);
-        }
-        // array_map(function ($a) {
-        //     $a['rating'] = self::ratingByFoodId($a->id);
-        // }, $foods);
-        // usort($foods, fn ($a, $b) => $a['rating'] <=> $b['rating']);
-        return $foods;
+
     }
 }

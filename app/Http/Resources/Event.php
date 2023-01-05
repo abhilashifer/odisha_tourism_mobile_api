@@ -17,8 +17,8 @@ class Event extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
-            'category' => new MasterSubcategory($this->subcategory),
-            'district' => $this->district(),
+            'category' => $this->category,
+            'district' => $this->district,
             'address' => $this->event_address,
             'from_date' => $this->from_date,
             'to_date' => $this->to_date,
@@ -31,7 +31,8 @@ class Event extends JsonResource
             'des_long' => $this->des_long,
             'thumbnail' => $this->thumbnail,
             'likes' => count($this->likes),
-            'reviews' => Review::collection($this->reviews),
+            'rating'=> $this->rating,
+            'reviews' => Review::collection($this->activeReviews),
             'images' => image::collection($this->images)
 
         ];

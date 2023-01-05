@@ -9,6 +9,7 @@ class TouristDestination extends Model
 {
     protected $fillable = ['name', 'trip_type', 'loc_cord', 'thumbnail', 'address', 'district_id', 'destination_category_id', 'email', 'mobile_number', 'website', 'des_short', 'des_long'];
 
+    protected $appends = ['category','district','rating'];
     /**
      * Retrieving tours
      */
@@ -19,14 +20,16 @@ class TouristDestination extends Model
     /**
      * Retrieving category name
      */
-    public function category()
+    public function getCategoryAttribute()
     {
-        return DB::table('m_attractions_category')->select('vchName')->where('intCatId', $this->destination_category_id)->value('vchName');
+        return DB::table('m_attractions_category')
+            ->select('vchName')->where('intCatId', $this->destination_category_id)
+            ->value('vchName');
     }
     /**
      * Retrieving district name
      */
-    public function district()
+    public function getDistrictAttribute()
     {
         return DB::table('t_district')->select('vchDistrictName')->where('intDistrictId', $this->district_id)->value('vchDistrictName');
     }
@@ -64,12 +67,12 @@ class TouristDestination extends Model
      */
     public function tags()
     {
-        return $this->morphToMany(Tag::class, 'taggable');
+        return $this->morphToMany(Tag::class, 'taggable')->select('id','tag');
     }
     /**
      * Retrieving rating
      */
-    public function rating()
+    public function getRatingAttribute()
     {
         $count = count($this->reviews);
         if ($count > 0) {

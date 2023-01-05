@@ -18,7 +18,7 @@ class Tour extends JsonResource
             'id' => $this->id,
             'name' => $this->name,
             'category' => $this->category,
-            'district' => $this->district(),
+            'district' => $this->district,
             'tour_from' => $this->tour_from,
             'tour_to' => $this->tour_to,
             'destinations' => TouristDestination::collection($this->touristDestinations),
@@ -27,6 +27,7 @@ class Tour extends JsonResource
             'des_long' => $this->des_long,
             'additional_info' => $this->additional_info,
             'likes' => count($this->likes),
+            'rating' => $this->rating,
             'reviews' => Review::collection($this->activeReviews),
             'images' => Image::collection($this->images)
 

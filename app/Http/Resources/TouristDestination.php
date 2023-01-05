@@ -18,12 +18,12 @@ class TouristDestination extends JsonResource
             'id' => $this->id,
             'name' => $this->name,
             'trip_type' => $this->trip_type,
-            'category' => $this->category(),
+            'category' => $this->category,
             'address' => $this->address,
-            'district' => $this->district(),
+            'district' => $this->district,
             'thumbnail' => $this->thumbnail,
             'des_short' => $this->des_short,
-            'rating' => $this->rating(),
+            'rating' => $this->rating,
             'likes' => count($this->likes),
             'tags' =>Tag::collection($this->tags)
         ];

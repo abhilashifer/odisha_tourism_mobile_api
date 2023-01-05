@@ -7,19 +7,19 @@ use Illuminate\Support\Facades\DB;
 
 class Tour extends Model
 {
-    protected $fillable = ['master_subcategory_id', 'district_id', 'name', 'tour_from', 'tour_to', 'des_short', 'des_long', 'loc_cord', 'additional_info'];
-
-    /**
-     * Retrieving category name
-     */
-    public function category()
+    protected $fillable = ['master_subcategory_id', 'district_id', 'name','thumbnail', 'tour_from', 'tour_to', 'des_short', 'des_long', 'loc_cord', 'additional_info'];
+    protected $appends = ['rating','category','district'];
+    public function getCategoryAttribute()
     {
-        return $this->belongsTo('App\MasterSubcategory');
+        return DB::table('master_subcategories')
+            ->select('name')
+            ->where('id',$this->master_subcategory_id)
+            ->value('name');
     }
     /**
      * Retrieving district name
      */
-    public function district()
+    public function getDistrictAttribute()
     {
         return DB::table('t_district')->select('vchDistrictName')->where('intDistrictId', $this->district_id)->value('vchDistrictName');
     }
@@ -65,6 +65,22 @@ class Tour extends Model
      */
     public function tags()
     {
-        return $this->morphToMany(Tag::class, 'taggable');
+        return $this->morphToMany(Tag::class, 'taggable')->select('id','tag');
+    }
+    /**
+     * Retrieving rating
+     */
+    public function getRatingAttribute()
+    {
+        $count = count($this->reviews);
+        if ($count > 0) {
+            $total_rating = 0;
+            foreach ($this->reviews as $val) {
+                $total_rating += $val->rating;
+            }
+            return $total_rating / $count;
+        } else {
+            return 0;
+        }
     }
 }
