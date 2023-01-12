@@ -3,9 +3,12 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Laravel\Scout\Searchable;
 
 class Food extends Model
 {
+    use Searchable;
+
     protected $table = 'foods';
 
     protected $fillable = ['master_subcategory_id', 'name', 'food_type', 'thumbnail', 'des_short', 'des_long'];

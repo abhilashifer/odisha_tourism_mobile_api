@@ -4,9 +4,13 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
+use Laravel\Scout\Searchable;
+
 
 class Activity extends Model
 {
+    use Searchable;
+
     protected $fillable = ['master_subcategory_id', 'name', 'des_short', 'des_long', 'thumbnail', 'loc_cord'];
 
     protected $appends = ['category','rating'];
