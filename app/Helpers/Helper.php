@@ -4,7 +4,7 @@ namespace App\Helpers;
 
 class Helper
 {
-    public static function uploadImages($)
+    public static function uploadImages($request)
     {
 
     }
