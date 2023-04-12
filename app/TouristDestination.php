@@ -4,9 +4,12 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
+use Laravel\Scout\Searchable;
 
 class TouristDestination extends Model
 {
+    use Searchable;
+
     protected $fillable = ['name', 'trip_type', 'loc_cord', 'thumbnail', 'address', 'district_id', 'destination_category_id', 'email', 'mobile_number', 'website', 'des_short', 'des_long'];
 
     protected $appends = ['category','district','rating'];

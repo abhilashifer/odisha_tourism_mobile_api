@@ -4,10 +4,12 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
-
+use Laravel\Scout\Searchable;
 
 class Accomodation extends Model
 {
+    use Searchable;
+
     protected $fillable = ['name', 'accomodation_cat_id', 'district_id', 'thumbnail', 'address', 'des_short', 'des_long', 'loc_cord', 'mobile_number', 'email', 'website'];
 
     protected $appends = ['category','district','rating'];

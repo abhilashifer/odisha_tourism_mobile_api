@@ -1,0 +1,46 @@
+<IfModule mod_rewrite.c>
+    <IfModule mod_negotiation.c>
+        Options -MultiViews -Indexes
+    </IfModule>
+
+    RewriteEngine On
+
+    # Handle Authorization Header
+    RewriteCond %{HTTP:Authorization} .
+    RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+
+    # Redirect Trailing Slashes If Not A Folder...
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteCond %{REQUEST_URI} (.+)/$
+    RewriteRule ^ %1 [L,R=301]
+
+    # Handle Front Controller...
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteRule ^ index.php [L]
+
+	<Files ~ "\.(env|json|config.js|md|gitignore|gitattributes|lock)$">
+		Order allow,deny
+		Deny from all
+   </Files>
+
+   RewriteCond %{REQUEST_METHOD} ^(TRACE|TRACK|OPTIONS)
+   RewriteRule .* - [F]
+
+</IfModule>
+#<ifModule mod_headers.c>
+#    Header set Access-Control-Allow-Origin: *
+#</ifModule>
+
+<IfModule mod_headers.c>
+    Header set X-XSS-Protection "1; mode=block"
+    Header set X-Frame-Options "SAMEORIGIN"
+    Header set X-Content-Type-Options "nosniff"
+    Header always set Strict-Transport-Security "max-age=63072000; includeSubDomains"
+    Header set Content-Security-Policy ...
+    Header set Referrer-Policy "same-origin"
+    Header set Feature-Policy "geolocation 'self'; vibrate 'none'"
+</IfModule>
+<FilesMatch "\.(html|php)$">
+Header set Content-Security-Policy "policy-definition"
+</FilesMatch>

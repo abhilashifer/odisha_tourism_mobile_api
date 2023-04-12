@@ -4,9 +4,11 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
+use Laravel\Scout\Searchable;
 
 class Tour extends Model
 {
+    use Searchable;
     protected $fillable = ['master_subcategory_id', 'district_id', 'name','thumbnail', 'tour_from', 'tour_to', 'des_short', 'des_long', 'loc_cord', 'additional_info'];
     protected $appends = ['rating','category','district'];
     public function getCategoryAttribute()

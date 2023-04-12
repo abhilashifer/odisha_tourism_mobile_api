@@ -5,9 +5,11 @@ namespace App;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
+use Laravel\Scout\Searchable;
 
 class Event extends Model
 {
+    use Searchable;
   protected $fillable = ['master_subcategory_id', 'district_id', 'name', 'event_address', 'from_date', 'to_date', 'from_time', 'to_time', 'loc_cord', 'mobile_number', 'website', 'des_short', 'des_long', 'thumbnail'];
   protected $appends = ['category','district','rating'];
    public function getCategoryAttribute()
